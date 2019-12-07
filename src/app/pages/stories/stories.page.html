@@ -9,19 +9,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-icon [name]="item.icon" slot="start"></ion-icon>
-      {{item.title}}
-      <div class="item-note" slot="end">
-        {{item.note}}
-      </div>
-    </ion-item>
-  </ion-list>
-  <!--
-    <div *ngIf="selectedItem" padding>
-      You navigated here from <b>{{selectedItem.title }}</b>
-    </div>
-  -->
+<ion-content fullscreen>
+  <ion-card *ngFor="let story of stories">
+    <ion-card-header>
+      <ion-card-title>{{ story.title }}</ion-card-title>
+    </ion-card-header>
+    <img [src]="story.imageUrl" />
+<!--     <ion-card-content>
+      {{ story.date.toLocaleDateString("en-US") }}
+    </ion-card-content> -->
+  </ion-card>
 </ion-content>
