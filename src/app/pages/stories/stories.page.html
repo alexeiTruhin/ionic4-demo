@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <ion-card *ngFor="let story of stories">
+  <ion-card *ngFor="let story of stories" [routerLink]="['/app/story', story.id]">
     <ion-card-header>
       <ion-card-title>{{ story.title }}</ion-card-title>
     </ion-card-header>

@@ -21,9 +21,21 @@ export class StoryDetailPage implements OnInit {
     }
 
   ngOnInit() {
-    this.storiesService.getStory(2000).subscribe( story => {
-      this.story = story;
-    });
+    this.activatedRoute.paramMap.subscribe(paramMap => {
+      
+      if (!paramMap.has('storyId')) {
+        // redirect
+        this.router.navigate(['/app/', 'stories']);
+        return;
+      }
+      
+      const storyId: number = +paramMap.get('storyId');
+      console.log(storyId);
+      this.storiesService.getStory(storyId).subscribe( story => {
+        this.story = story;
+      });
+    })
+
   }
 
 }
