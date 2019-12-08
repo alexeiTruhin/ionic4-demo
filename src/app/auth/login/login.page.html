@@ -1,9 +1,29 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content class="ion-padding">
+  <form>
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
+          <div class="ion-text-center">
+            <h3>Sign in</h3>
+          </div>
+          <div class="ion-padding">
+            <ion-item>
+              <ion-icon name="mail" slot="start"></ion-icon>
+              <ion-input name="email" type="email" placeholder="Email" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="lock" slot="start"></ion-icon>
+              <ion-input name="password" type="password" placeholder="Password" required></ion-input>
+            </ion-item>
+          </div>
+          <div class="ion-padding">
+            <div>
+              <ion-button fill="outline" size="medium" type="submit" disabled="true">Sign Up</ion-button>
+              <ion-button color="primary" size="medium" type="submit">Sign In</ion-button>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>
