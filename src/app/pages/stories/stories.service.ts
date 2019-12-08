@@ -57,6 +57,21 @@ export class StoriesService {
     return forkJoin(requests);
   }
 
+  getStory(id: number) {
+    return this.http.get(this.generateXkcdUrl(id)).pipe(
+      map( rawStory => {
+        console.log(rawStory);
+        return {
+          id: id,
+          title: rawStory.title,
+          description: rawStory.alt,
+          imageUrl: rawStory.img,
+          date: new Date(rawStory.year, rawStory.day, rawStory.month)
+        }
+      })
+    ) 
+  }
+
   private generateXkcdUrl(id: number) {
     if (id > 0 && id < XKCD_LIMIT) { 
       // There are only 2000+ xkcd posts
