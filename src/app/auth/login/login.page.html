@@ -1,5 +1,5 @@
 <ion-content class="ion-padding">
-  <form>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <ion-grid>
       <ion-row class="ion-justify-content-center">
         <ion-col class="ion-align-self-center" size-md="6" size-lg="5" size-xs="12">
@@ -9,19 +9,35 @@
           <div class="ion-padding">
             <ion-item>
               <ion-icon name="mail" slot="start"></ion-icon>
-              <ion-input name="email" type="email" placeholder="Email" required></ion-input>
+              <ion-input formControlName="email"  type="email" placeholder="Email" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" required></ion-input>
             </ion-item>
             <ion-item>
               <ion-icon name="lock" slot="start"></ion-icon>
-              <ion-input name="password" type="password" placeholder="Password" required></ion-input>
+              <ion-input formControlName="password" type="password" placeholder="Password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" required></ion-input>
             </ion-item>
           </div>
-          <div class="ion-padding">
-            <div>
-              <ion-button fill="outline" size="medium" type="submit" disabled="true">Sign Up</ion-button>
-              <ion-button (click)="login()" color="primary" size="medium" type="submit">Sign In</ion-button>
-            </div>
-          </div>
+
+          <ion-list class="error-messages" class="ion-margin-horizontal">
+            <ion-item color="danger" *ngIf="submitted && f.email.errors">
+              <div *ngIf="f.email.errors.required">Email is required</div>
+              <div *ngIf="f.email.errors.email">Please provide a valid email address</div>
+            </ion-item>
+            <ion-item color="danger" *ngIf="submitted && f.password.errors" >
+              <div *ngIf="f.password.errors.required">Password is required</div>
+              <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+            </ion-item>
+          </ion-list>
+
+          <ion-grid class="ion-margin-horizontal">
+            <ion-row>
+              <ion-col>
+                <ion-button fill="outline" size="medium" expand="block" disabled="true">Sign Up</ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button color="primary" size="medium" expand="block" type="submit">Sign In</ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-col>
       </ion-row>
     </ion-grid>
