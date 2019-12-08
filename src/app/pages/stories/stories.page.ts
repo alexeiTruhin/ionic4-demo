@@ -13,7 +13,9 @@ export class StoriesPage implements OnInit {
   constructor(private storiesService: StoriesService) { }
 
   ngOnInit() {
-    this.stories = this.storiesService.getStories();
+    this.storiesService.getStories().subscribe( stories => {
+      this.stories = stories;
+    });
   }
 
 }
