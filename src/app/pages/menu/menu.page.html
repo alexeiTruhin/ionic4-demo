@@ -15,6 +15,16 @@
             </ion-label>
           </ion-item>
         </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false">
+          <a href="#" class="ion-text-decoration-none">
+            <ion-item (click)="logout()">
+              <ion-icon slot="start" name="log-out"></ion-icon>
+              <ion-label>
+                Log out
+              </ion-label>
+            </ion-item>
+          </a>
+        </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>
