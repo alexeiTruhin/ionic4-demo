@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Story } from './story.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
+
+import { Story } from './story.model';
+import { User } from '../users/user.model';
+import { UsersService } from '../users/users.service';
+
 
 const XKCD_LIMIT: number = 2000;
+const USER_LIMIT: number = 10;
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +17,10 @@ const XKCD_LIMIT: number = 2000;
 export class StoriesService { 
   private stories: Story[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private usersService: UsersService,
+  ) { }
 
   // XKCD has only one API method which returns only 1 post.
   // And I want to display specifically XKCD posts, 
@@ -22,22 +30,33 @@ export class StoriesService {
 
     let requests: Observable<Object>[] = [];
     for (let i = 0; i < n; i++) {
-      const id = this.getRandomInt(1, XKCD_LIMIT)
+      const story_id = this.getRandomInt(1, XKCD_LIMIT);
       requests.push(
-        this.http.get(this.generateXkcdUrl(id)).pipe(
-          map( rawStory => {
-            const story = {
-              id: id,
-              title: rawStory.title,
-              description: rawStory.alt,
-              imageUrl: rawStory.img,
-              date: new Date(rawStory.year, rawStory.day, rawStory.month)
-            };
+        this.http.get(this.generateXkcdUrl(story_id)).pipe(
+          mergeMap( rawStory => {
+            // The author_id should be provided by XKCD response,
+            // as a part of rawStory object.
+            // It doesn't exist so a random id is generated.
+            rawStory.author_id = this.getRandomInt(1, USER_LIMIT);
+            return this.usersService.getUser(rawStory.author_id).pipe(
+              map( user =>
+                {
+                  const story = {
+                    id: story_id,
+                    title: rawStory.title,
+                    description: rawStory.alt,
+                    imageUrl: rawStory.img,
+                    date: new Date(rawStory.year, rawStory.day, rawStory.month),
+                    author: user
+                  };
 
-            this.stories.push(story);
+                  this.stories.push(story);
 
-            return story;
-          })
+                  return story;
+                }
+              )
+            )}
+          )
         )
 
       );

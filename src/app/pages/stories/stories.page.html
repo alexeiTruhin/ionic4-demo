@@ -11,10 +11,20 @@
 
 <ion-content fullscreen>
   <ion-card *ngFor="let story of stories" [routerLink]="['/app/story', story.id]">
-    <ion-card-header>
-      <ion-card-title>{{ story.title }}</ion-card-title>
-    </ion-card-header>
-    <img [src]="story.imageUrl" />
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="story.author.avatar">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ story.author.first_name }} {{ story.author.last_name }}</h2>
+        </ion-label>
+      </ion-item>
+      <ion-card-header>
+        <ion-card-title>{{ story.title }}</ion-card-title>
+      </ion-card-header>
+      <img [src]="story.imageUrl" />
+    </ion-card-content>
   </ion-card>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">

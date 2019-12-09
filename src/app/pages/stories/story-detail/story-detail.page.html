@@ -12,6 +12,14 @@
   <ion-grid class="ion-no-padding">
     <ion-row>
       <ion-col class="ion-no-padding">
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <img [src]="story.author.avatar">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ story.author.first_name }} {{ story.author.last_name }}</h2>
+          </ion-label>
+        </ion-item>
         <ion-img [src]="story.imageUrl"></ion-img>
       </ion-col>
     </ion-row>
