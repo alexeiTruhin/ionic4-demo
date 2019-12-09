@@ -62,7 +62,6 @@ export class StoriesService {
 
     return this.http.get(this.generateXkcdUrl(id)).pipe(
       map( rawStory => {
-        console.log(rawStory);
         return {
           id: id,
           title: rawStory.title,

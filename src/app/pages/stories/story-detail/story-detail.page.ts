@@ -30,7 +30,7 @@ export class StoryDetailPage implements OnInit {
       }
       
       const storyId: number = +paramMap.get('storyId');
-      console.log(storyId);
+
       this.storiesService.getStory(storyId).subscribe( story => {
         this.story = story;
       });

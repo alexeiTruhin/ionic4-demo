@@ -21,11 +21,31 @@ export class StoriesPage implements OnInit {
 
   ngOnInit() {
     this.showLoader();
+    this.storiesService.getStories().subscribe( 
+      stories => {
+        this.stories = stories;
+      },
+      err => {
+        // TODO
+      },
+      () => {
+        this.hideLoader();
+      }
+    );
+  }
+
+  loadData(event) {
     this.storiesService.getStories().subscribe( stories => {
-      this.stories = stories;
-      this.hideLoader();
+      this.stories.push(...stories);
+      event.target.complete();
+
+      // Disable if too many stories
+      // if (this.stories.length === 30) {
+      //   event.target.disabled = true;
+      // }
     });
   }
+
 
   showLoader() {
     this.loadingController.create({
