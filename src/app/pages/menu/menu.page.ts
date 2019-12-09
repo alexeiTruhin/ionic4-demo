@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from '../../auth/authentication.service';
+import { User } from '../pages/users/user.model';
 
 @Component({
   selector: 'app-menu',
@@ -20,9 +21,13 @@ export class MenuPage implements OnInit {
       icon: 'people'
     },
   ];
+
+  currentUser: User = {};
+
   constructor(private authService: AuthenticationService) { }
 
   ngOnInit() {
+    this.currentUser = this.authService.currentUser();
   }
 
   logout() {

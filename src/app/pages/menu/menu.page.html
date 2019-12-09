@@ -6,6 +6,12 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
+      <div class="menu-user ion-padding">
+        <ion-avatar>
+          <img [src]="currentUser.avatar">
+        </ion-avatar>
+      </div>
+
       <ion-list>
         <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
           <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
