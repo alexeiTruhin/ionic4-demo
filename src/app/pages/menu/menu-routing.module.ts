@@ -15,8 +15,11 @@ const routes: Routes = [
       {
         path: 'story/:storyId',
         loadChildren: () => import('../stories/story-detail/story-detail.module').then( m => m.StoryDetailPageModule)
-      }
-
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('../users/users.module').then( m => m.UsersPageModule)
+      },
     ]
   },
   { 
