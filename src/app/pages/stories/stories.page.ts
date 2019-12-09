@@ -20,18 +20,19 @@ export class StoriesPage implements OnInit {
   }
 
   ngOnInit() {
-    this.showLoader();
-    this.storiesService.getStories().subscribe( 
-      stories => {
-        this.stories = stories;
-      },
-      err => {
-        // TODO
-      },
-      () => {
-        this.hideLoader();
-      }
-    );
+    this.showLoader().then((res) => {
+      this.storiesService.getStories().subscribe( 
+        stories => {
+          this.stories = stories;
+        },
+        err => {
+          // TODO
+        },
+        () => {
+          res.dismiss();
+        }
+      );
+    })
   }
 
   loadData(event) {
@@ -46,17 +47,13 @@ export class StoriesPage implements OnInit {
     });
   }
 
-
   showLoader() {
-    this.loadingController.create({
+    return this.loadingController.create({
       message: 'Loading content...'
     }).then((res) => {
       res.present();
+      return res
     });
-  }
-
-  hideLoader() {
-    this.loadingController.dismiss();
   }
 
 }
