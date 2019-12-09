@@ -7,6 +7,16 @@ import { Story } from './story.model';
 import { User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
 
+interface RawStory {
+  id: number;
+  title: string;
+  alt: string;
+  img: string;
+  year: number;
+  day: number;
+  month: number;
+  author_id: number;
+}
 
 const XKCD_LIMIT: number = 2000;
 const USER_LIMIT: number = 10;
@@ -32,44 +42,18 @@ export class StoriesService {
     for (let i = 0; i < n; i++) {
       const story_id = this.getRandomInt(1, XKCD_LIMIT);
       requests.push(
-        this.http.get(this.generateXkcdUrl(story_id)).pipe(
-          mergeMap( rawStory => {
-            // The author_id should be provided by XKCD response,
-            // as a part of rawStory object.
-            // It doesn't exist so a random id is generated.
-            rawStory.author_id = this.getRandomInt(1, USER_LIMIT);
-            return this.usersService.getUser(rawStory.author_id).pipe(
-              map( user =>
-                {
-                  const story = {
-                    id: story_id,
-                    title: rawStory.title,
-                    description: rawStory.alt,
-                    imageUrl: rawStory.img,
-                    date: new Date(rawStory.year, rawStory.day, rawStory.month),
-                    author: user
-                  };
-
-                  this.stories.push(story);
-
-                  return story;
-                }
-              )
-            )}
-          )
-        )
-
+        this.requestStory(story_id)
       );
     }
 
     return forkJoin(requests);
   }
 
-  getStory(id: number): Observable<Story> {
+  getStory(story_id: number): Observable<Story> {
     // Check if we have the story in cache
     const story: Story = this.stories.find(
       story => {
-      return story.id === id; 
+      return story.id === story_id; 
     });
     if (story) return Observable.create((observer) =>
       {
@@ -79,16 +63,35 @@ export class StoriesService {
     );
 
 
-    return this.http.get(this.generateXkcdUrl(id)).pipe(
-      map( rawStory => {
-        return {
-          id: id,
-          title: rawStory.title,
-          description: rawStory.alt,
-          imageUrl: rawStory.img,
-          date: new Date(rawStory.year, rawStory.day, rawStory.month)
-        }
-      })
+    return this.requestStory(story_id);
+  }
+
+  private requestStory(story_id: number) {
+    return this.http.get(this.generateXkcdUrl(story_id)).pipe(
+      mergeMap( (rawStory: RawStory) => {
+        // The author_id should be provided by XKCD response,
+        // as a part of rawStory object.
+        // It doesn't exist so a random id is generated.
+        rawStory.author_id = this.getRandomInt(1, USER_LIMIT);
+        return this.usersService.getUser(rawStory.author_id).pipe(
+          map( user =>
+            {
+              const story = {
+                id: story_id,
+                title: rawStory.title,
+                description: rawStory.alt,
+                imageUrl: rawStory.img,
+                date: new Date(rawStory.year, rawStory.day, rawStory.month),
+                author: user
+              };
+
+              this.stories.push(story);
+
+              return story;
+            }
+          )
+        )}
+      )
     ) 
   }
 

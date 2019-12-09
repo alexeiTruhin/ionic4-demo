@@ -5,6 +5,10 @@ import { map } from 'rxjs/operators';
 
 import { User } from './user.model';
 
+interface rawUsers {
+  data: Array<any>;
+}
+
 const API_ENDPOINT: string = 'https://reqres.in/api/';
 
 @Injectable({
@@ -17,7 +21,7 @@ export class UsersService {
 
   getUsers(): Observable<any>  { 
     return this.http.get(API_ENDPOINT + 'users?per_page=10').pipe(
-      map( res => {
+      map( (res: rawUsers) => {
         const users = res.data;
         this.users = [...res.data];
 
@@ -29,7 +33,7 @@ export class UsersService {
   getUser(id: number): Observable<any>  { 
     // TODO fail if there is no user with such id
     return this.http.get(API_ENDPOINT + `users/${id}`).pipe(
-      map( res => {
+      map( (res: rawUsers) => {
         const user = res.data;
 
         return user;

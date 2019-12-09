@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from '../../auth/authentication.service';
-import { User } from '../pages/users/user.model';
+import { User } from '../users/user.model';
 
 @Component({
   selector: 'app-menu',
@@ -22,7 +22,7 @@ export class MenuPage implements OnInit {
     },
   ];
 
-  currentUser: User = {};
+  currentUser = {};
 
   constructor(private authService: AuthenticationService) { }
 

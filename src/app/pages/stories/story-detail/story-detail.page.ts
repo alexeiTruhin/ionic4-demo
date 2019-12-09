@@ -16,9 +16,7 @@ export class StoryDetailPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private storiesService: StoriesService,
-    ) {
-      this.story = {};
-    }
+    ) { }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(paramMap => {
